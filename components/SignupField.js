@@ -13,6 +13,8 @@ import {
 import Styles from "./styles/Styles";
 
 import SignupFieldText from "./SignupFieldText";
+import SignupFieldProfilePic from "./SignupFieldProfilePic";
+import SignupFieldMarketplaceSelector from "./SignupFieldMarketplaceSelector";
 
 export default class SignupField extends Component {
 
@@ -30,7 +32,7 @@ export default class SignupField extends Component {
 	}
 
 	onNext() {
-		if (this.props.value != "") {
+		if (this.props.value != "" || !this.props.field.required) {
 			Animated.timing(this.state.fieldPosition, {
 				toValue: 1,
 				duration: 200
@@ -72,6 +74,26 @@ export default class SignupField extends Component {
 					onNext={() => this.onNext()}
 				/>
 			)
+		} else if (this.props.field.type == "pic") {
+			return (
+				<SignupFieldProfilePic
+					id={this.props.id}
+					value={this.props.value}
+					field={this.props.field}
+					onChangeFile={(field, uri) => this.props.onChangeText(field, uri)}
+					onNext={() => this.onNext()}
+				/>
+			)
+		} else if (this.props.field.type == "marketplace") {
+			return (
+				<SignupFieldMarketplaceSelector
+					id={this.props.id}
+					marketplaces={this.props.marketplaces}
+					field={this.props.field}
+					onChangeMarketplaces={this.props.onChangeMarketplaces}
+					onNext={() => this.onNext()}
+				/>
+			);
 		} else {
 			return null;
 		}
@@ -88,6 +110,11 @@ export default class SignupField extends Component {
 		}
 
 		var containerStyles = [localStyles.container];
+
+		if (this.props.field.type == "marketplace" || this.props.field.type == "pic") {
+			containerStyles.push(localStyles.containerNoBorder);
+		}
+
 		containerStyles.push({
 			transform: [
 				{translateX: this.state.fieldPosition.interpolate({
@@ -101,9 +128,7 @@ export default class SignupField extends Component {
 		return (
 			<View style={localStyles.outerContainer}>
 				<Animated.View style={containerStyles}>
-					
-						{this.renderFieldType()}
-					
+					{this.renderFieldType()}
 					{this.renderAdditionalInfo(this.props.additionalInfo)}
 				</Animated.View>
 			</View>
@@ -116,7 +141,7 @@ const localStyles = StyleSheet.create({
 		flexDirection: "column"
 	},
 	outerContainer: {
-		flexDirection: "row"
+		flexDirection: "row",
 	},
 	container: {
 		flexDirection: "row",
@@ -127,7 +152,9 @@ const localStyles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: Styles.colours.lightBackground
 	},
-	
+	containerNoBorder: {
+		borderBottomWidth: 0
+	},
 	
 	additionalInfo: {
 		color: Styles.colours.primary,

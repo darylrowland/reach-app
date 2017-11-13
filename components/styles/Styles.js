@@ -20,6 +20,25 @@ module.exports = {
     styles: {
         content: {
             padding: 30
+        },
+        mediumTitle: {
+            fontSize: 36,
+            lineHeight: 36,
+            color: COLOURS.black,
+            fontFamily: FONTS.bold,
+            marginBottom: 10
+        },
+        smallTitle: {
+            fontSize: 28,
+            lineHeight: 28,
+            color: COLOURS.black,
+            fontFamily: FONTS.bold
+        },
+        description: {
+            marginTop: 20,
+            fontSize: 18,
+            color: COLOURS.black,
+            fontFamily: FONTS.default
         }
     }
 }; 

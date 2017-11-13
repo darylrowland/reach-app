@@ -60,6 +60,8 @@ const FIELDS = [
 		return value.toUpperCase();
 	}},
 	{id: "firstLineAddress", title: "First line of address", required: true},
+	{id: "pic", title: "Profile Pic", required: false, type: "pic"},
+	{id: "marketplace", title: "Select services", required: false, type: "marketplace"},
 	
 ]
 
@@ -68,7 +70,7 @@ export default class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 4,
+			currentStep: 0,
 			postcode: "SW12 0NY",
 			firstName: "Daryl"
 		};
@@ -157,6 +159,8 @@ export default class Signup extends Component {
 						value={this.state[FIELDS[this.state.currentStep].id]}
 						field={FIELDS[this.state.currentStep]}
 						onChangeText={(field, value) => this.onChangeField(field, value)}
+						onChangeMarketplaces={this.props.onChangeMarketplaces}
+						marketplaces={this.props.marketplaces}
 						onNext={() => this.onNextStep()}
 						additionalInfo={this.getAdditionalInfo(FIELDS[this.state.currentStep])}/>
 				</View>

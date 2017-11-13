@@ -42,7 +42,10 @@ export default class Welcome extends Component {
 			return null;
 		} else {
 			return (
-				<Signup onBack={() => this.showPage("welcome")}/>
+				<Signup 
+					onBack={() => this.showPage("welcome")}
+					marketplaces={this.props.marketplaces}
+					onChangeMarketplaces={this.props.onChangeMarketplaces}/>
 			);
 		}
 		

@@ -13,8 +13,17 @@ export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: null	
+			user: null,
+			marketplaces: {
+				
+			}	
 		};
+	}
+
+	onChangeMarketplaces(marketplaces) {
+		this.setState({
+			marketplaces: marketplaces
+		});
 	}
 
 	render() {
@@ -26,7 +35,10 @@ export default class Main extends Component {
 			);
 		} else {
 			return (
-				<Welcome/>
+				<Welcome
+					marketplaces={this.state.marketplaces}
+					onChangeMarketplaces={() => this.onChangeMarketplaces()}
+				/>
 			);
 		}
 		
