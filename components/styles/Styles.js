@@ -14,6 +14,7 @@ const FONTS = {
 
 module.exports = {
     activeOpacity: 0.9,
+    hitSlop: {left: 20, right: 20, bottom: 20, top: 20},
     colours: COLOURS,
     fonts: FONTS,
     styles: {

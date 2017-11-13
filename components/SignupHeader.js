@@ -15,7 +15,7 @@ export default class SignupHeader extends Component {
 
 		if (this.props.showBack) {
 			back = (
-				<TouchableOpacity activeOpacity={Styles.activeOpacity} onPress={this.props.onBack}>
+				<TouchableOpacity activeOpacity={Styles.activeOpacity} onPress={this.props.onBack} hitSlop={Styles.hitSlop}>
 					<Image source={require("../images/back.png")}/>
 				</TouchableOpacity>
 			);

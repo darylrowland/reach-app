@@ -6,6 +6,7 @@ import {
 	Image,
 	View,
 	Dimensions,
+	Animated,
 	TouchableOpacity
 } from 'react-native';
 
@@ -13,13 +14,67 @@ import Styles from "./styles/Styles";
 
 export default class SignupField extends Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			fieldPosition: new Animated.Value(0)
+		};
+
+		this.renderNextButton = this.renderNextButton.bind(this);
+	}
+
 	onChangeText(fieldId, value) {
 		this.props.onChangeText(fieldId, value);
 	}
 
 	onNext() {
 		if (this.props.value != "") {
-			this.props.onNext();
+			Animated.timing(this.state.fieldPosition, {
+				toValue: 1,
+				duration: 200
+			}).start(() => {
+				this.setState({
+					fieldPosition: new Animated.Value(-1)
+				}, () => {
+					this.props.onNext();
+					Animated.timing(this.state.fieldPosition, {
+						toValue: 0,
+						duration: 200
+					}).start();
+				});
+			});
+		}
+	}
+
+	renderNextButton(field, value) {
+		var passedValidation;
+
+		if (!field.validator) {
+			passedValidation = true;
+		} else {
+			passedValidation = field.validator(value);
+		}
+
+		if ((value && passedValidation) || !field.required) {
+			return (
+				<TouchableOpacity activeOpacity={Styles.activeOpacity} onPress={() => this.onNext()} hitSlop={Styles.hitSlop}>
+					<Image source={require("../images/forward.png")}/>
+				</TouchableOpacity>
+			);
+		} else {
+			return null;
+		}
+	}
+
+	renderAdditionalInfo(additionalInfo) {
+		if (additionalInfo) {
+			return (
+				<View style={localStyles.additionalInfoHolder}>
+					<Text style={localStyles.additionalInfo}>
+						{additionalInfo}
+					</Text>
+				</View>
+			)
 		}
 	}
 
@@ -31,17 +86,22 @@ export default class SignupField extends Component {
 			label = (
 				<Text style={localStyles.label}>{this.props.title}</Text>
 			);
-
-			next = (
-				<TouchableOpacity activeOpacity={Styles.activeOpacity} onPress={() => this.onNext()}>
-					<Image source={require("../images/forward.png")}/>
-				</TouchableOpacity>
-			);
 		}
+
+		var containerStyles = [localStyles.container];
+		containerStyles.push({
+			transform: [
+				{translateX: this.state.fieldPosition.interpolate({
+					inputRange: [-1, 0, 1],
+					outputRange: [-Dimensions.get("window").width, 0, Dimensions.get("window").width]
+				})}
+			]
+		});
+		
 
 		return (
 			<View style={localStyles.outerContainer}>
-				<View style={localStyles.container}>
+				<Animated.View style={containerStyles}>
 					<View style={localStyles.fieldAndLabel}>
 						<View style={localStyles.labelHolder}>
 							{label}
@@ -51,14 +111,18 @@ export default class SignupField extends Component {
 								key={this.props.id}
 								value={this.props.value}
 								placeholder={this.props.title}
-								onChangeText={(value) => this.onChangeText(this.props.id, value)}
+								onChangeText={(value) => this.onChangeText(this.props.field, value)}
 								style={localStyles.field}
 								onSubmitEditing={() => this.onNext()}
+								keyboardType={this.props.field.keyboardType}
 							/>
-							{next}
+							{this.renderNextButton(this.props.field, this.props.value)}
 						</View>
+						
+
 					</View>
-				</View>
+					{this.renderAdditionalInfo(this.props.additionalInfo)}
+				</Animated.View>
 			</View>
 		)
 	}
@@ -105,5 +169,18 @@ const localStyles = StyleSheet.create({
 		fontSize: 15,
 		fontFamily: Styles.fonts.bold,
 		color: Styles.colours.border
+	},
+	additionalInfo: {
+		color: Styles.colours.primary,
+		fontFamily: Styles.fonts.bold,
+		fontSize: 14
+	},
+	additionalInfoHolder: {
+		position: "absolute",
+		top: 90,
+		width: Dimensions.get("window").width - 60,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flex-start"
 	}
 });
