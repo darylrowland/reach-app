@@ -12,6 +12,8 @@ import {
 
 import Styles from "./styles/Styles";
 
+import SignupFieldText from "./SignupFieldText";
+
 export default class SignupField extends Component {
 
 	constructor(props) {
@@ -20,7 +22,7 @@ export default class SignupField extends Component {
 			fieldPosition: new Animated.Value(0)
 		};
 
-		this.renderNextButton = this.renderNextButton.bind(this);
+		this.renderFieldType = this.renderFieldType.bind(this);
 	}
 
 	onChangeText(fieldId, value) {
@@ -46,26 +48,6 @@ export default class SignupField extends Component {
 		}
 	}
 
-	renderNextButton(field, value) {
-		var passedValidation;
-
-		if (!field.validator) {
-			passedValidation = true;
-		} else {
-			passedValidation = field.validator(value);
-		}
-
-		if ((value && passedValidation) || !field.required) {
-			return (
-				<TouchableOpacity activeOpacity={Styles.activeOpacity} onPress={() => this.onNext()} hitSlop={Styles.hitSlop}>
-					<Image source={require("../images/forward.png")}/>
-				</TouchableOpacity>
-			);
-		} else {
-			return null;
-		}
-	}
-
 	renderAdditionalInfo(additionalInfo) {
 		if (additionalInfo) {
 			return (
@@ -75,6 +57,23 @@ export default class SignupField extends Component {
 					</Text>
 				</View>
 			)
+		}
+	}
+
+	renderFieldType() {
+		if (!this.props.field.type || this.props.field.type == "text") {
+			return (
+				<SignupFieldText
+					id={this.props.id}
+					value={this.props.value}
+					title={this.props.title}
+					field={this.props.field}
+					onChangeText={(field, value) => this.props.onChangeText(field, value)}
+					onNext={() => this.onNext()}
+				/>
+			)
+		} else {
+			return null;
 		}
 	}
 
@@ -102,25 +101,9 @@ export default class SignupField extends Component {
 		return (
 			<View style={localStyles.outerContainer}>
 				<Animated.View style={containerStyles}>
-					<View style={localStyles.fieldAndLabel}>
-						<View style={localStyles.labelHolder}>
-							{label}
-						</View>
-						<View style={localStyles.inputAndNext}>
-							<TextInput
-								key={this.props.id}
-								value={this.props.value}
-								placeholder={this.props.title}
-								onChangeText={(value) => this.onChangeText(this.props.field, value)}
-								style={localStyles.field}
-								onSubmitEditing={() => this.onNext()}
-								keyboardType={this.props.field.keyboardType}
-							/>
-							{this.renderNextButton(this.props.field, this.props.value)}
-						</View>
-						
-
-					</View>
+					
+						{this.renderFieldType()}
+					
 					{this.renderAdditionalInfo(this.props.additionalInfo)}
 				</Animated.View>
 			</View>
@@ -135,15 +118,6 @@ const localStyles = StyleSheet.create({
 	outerContainer: {
 		flexDirection: "row"
 	},
-	fieldAndLabel: {
-		flexDirection: "column",
-		height: 60,
-		flex: 1
-	},
-	inputAndNext: {
-		flex: 1,
-		flexDirection: "row"
-	},
 	container: {
 		flexDirection: "row",
 		flex: 1,
@@ -153,23 +127,8 @@ const localStyles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: Styles.colours.lightBackground
 	},
-	labelHolder: {
-		height: 40
-	},
-	field: {
-		fontFamily: Styles.fonts.bold,
-		flexDirection: "row",
-		color: Styles.colours.black,
-		fontSize: 20,
-		height: 30,
-		flex: 1
-		
-	},
-	label: {
-		fontSize: 15,
-		fontFamily: Styles.fonts.bold,
-		color: Styles.colours.border
-	},
+	
+	
 	additionalInfo: {
 		color: Styles.colours.primary,
 		fontFamily: Styles.fonts.bold,
