@@ -50,11 +50,26 @@ export default class MarketplaceSelector extends Component {
 	renderRow(item) {
 		var selectedSquare = null;
 
-		if (this.props.marketplaces && this.props.marketplaces[item.id]) {
-			selectedSquare = (
-				<View style={localStyles.selectorSquareOn}>
-				</View>
-			);
+		if (this.props.marketplaces && this.props.marketplaces[item.id] && this.props.marketplaces[item.id].prices && Object.keys(this.props.marketplaces[item.id].prices).length > 0) {
+			// Check that there is at least 1 > 0 price
+			var validPriceList = false;
+
+			var itemIds = Object.keys(this.props.marketplaces[item.id].prices);
+
+			for(var i = 0; i < itemIds.length; i++) {
+				if (this.props.marketplaces[item.id].prices[itemIds[0]]) {
+					validPriceList = true;
+					break;
+				}
+			}
+
+			if (validPriceList) {
+				selectedSquare = (
+					<View style={localStyles.selectorSquareOn}>
+					</View>
+				);
+			}
+		
 		}
 
 		return (
@@ -96,7 +111,6 @@ export default class MarketplaceSelector extends Component {
 					onClose={() => this.onCloseRateCard()}
 					marketplaces={this.props.marketplaces}
 					onChangeMarketplaces={this.props.onChangeMarketplaces}/>
-
 			</View>
 		)
 	}

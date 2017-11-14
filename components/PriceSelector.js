@@ -3,10 +3,13 @@ import {
 	StyleSheet,
 	Text,
 	Image,
+	TouchableOpacity,
 	View
 } from 'react-native';
 
 import Styles from "./styles/Styles";
+
+const PRICE_INCREMENT = 10;
 
 export default class PriceSelector extends Component {
 
@@ -27,12 +30,23 @@ export default class PriceSelector extends Component {
 		return 0;
 	}
 
+	onChangePrice(increment) {
+		if (this.getPrice() + increment >= 0) {
+			this.props.onChangePrice(this.getPrice() + increment);
+		}
+		
+	}
+
 	render() {
 		return (
 			<View style={localStyles.container}>
-				<Image source={require("../images/minusbtn.png")}/>
+				<TouchableOpacity activeOpacity={Styles.activeOpacity} hitSlop={Styles.hitSlop} onPress={() => this.onChangePrice(-PRICE_INCREMENT)}>
+					<Image source={require("../images/minusbtn.png")}/>
+				</TouchableOpacity>
 				<Text style={localStyles.price}>£{this.getPrice()}</Text>
-				<Image source={require("../images/addbtn.png")}/>
+				<TouchableOpacity activeOpacity={Styles.activeOpacity} hitSlop={Styles.hitSlop} onPress={() => this.onChangePrice(PRICE_INCREMENT)}>
+					<Image source={require("../images/addbtn.png")}/>
+				</TouchableOpacity>
 			</View>
 		)
 	}

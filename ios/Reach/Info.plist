@@ -51,6 +51,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access photos to add profile pics</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access camera for profile pics</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NeuzeitGro-Bla.otf</string>
@@ -59,6 +63,7 @@
 		<string>NeuzeitGro-Reg.otf</string>
 		<string>NeuzeitGroCon-Bla.otf</string>
 		<string>NeuzeitGroExt-Bla.otf</string>
+		<string></string>
 	</array>
 </dict>
 </plist>

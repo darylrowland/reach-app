@@ -11,6 +11,7 @@ import {
 import Styles from "./styles/Styles";
 import Button from "./Button";
 import PriceSelector from "./PriceSelector";
+import update from "react-addons-update";
 
 const EXAMPLE_RATES = [
 	{id: 1, title: "Lock set installation blah oh yeah"},
@@ -26,6 +27,8 @@ export default class RateCard extends Component {
 			availableRates: null,
 			loading: true
 		};
+
+		this.getPrice = this.getPrice.bind(this);
 	}
 
 	componentDidMount() {
@@ -39,15 +42,37 @@ export default class RateCard extends Component {
 		});
 	}
 
-	onChangePrice() {
+	onChangePrice(item, price) {
+		var updatedMarketplaces = update(this.props.marketplaces, {$apply: (marketplaces) => {
+			if (!marketplaces[this.props.selectedMarketplace.id]) {
+				marketplaces[this.props.selectedMarketplace.id] = this.props.selectedMarketplace;
+			}
+	
+			if (!marketplaces[this.props.selectedMarketplace.id].prices) {
+				marketplaces[this.props.selectedMarketplace.id].prices = {};
+			}
+	
+			marketplaces[this.props.selectedMarketplace.id].prices[item.id] = price;
+	
+			return marketplaces;
+		}});
 		
+		this.props.onChangeMarketplaces(updatedMarketplaces);
+	}
+
+	getPrice(item) {
+		if (this.props.marketplaces[this.props.selectedMarketplace.id] && this.props.marketplaces[this.props.selectedMarketplace.id].prices && this.props.marketplaces[this.props.selectedMarketplace.id].prices[item.id]) {
+			return this.props.marketplaces[this.props.selectedMarketplace.id].prices[item.id];
+		}
+
+		return 0;
 	}
 
 	renderRow(item) {
 		return (
 			<View style={localStyles.row}>
 				<Text style={localStyles.title} numberOfLines={3}>{item.title}</Text>
-				<PriceSelector onChangePrice={(price) => this.onChangePrice(item, price)}/>
+				<PriceSelector price={this.getPrice(item)} onChangePrice={(price) => this.onChangePrice(item, price)}/>
 			</View>
 		)
 	}
@@ -65,14 +90,14 @@ export default class RateCard extends Component {
 								overScrollMode="never"
 								alwaysBounceVertical={false}
 								data={this.state.availableRates}
+								extraData={this.props.marketplaces}
 								renderItem={(item) => this.renderRow(item.item)}
 								keyExtractor={(item) => item.id}
 								style={localStyles.list}
 							/>
 						
 						</View>
-						<Button title="Save"/>
-						<Button title="Cancel" noBorder={true} onPress={this.props.onClose}/>
+						<Button title="Close" noBorder={false} onPress={this.props.onClose}/>
 					</View>
 				</View>
 			</Modal>

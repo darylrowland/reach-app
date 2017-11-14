@@ -69,6 +69,7 @@ export default class SignupField extends Component {
 					id={this.props.id}
 					value={this.props.value}
 					title={this.props.title}
+					secureEntry={this.props.secureEntry}
 					field={this.props.field}
 					onChangeText={(field, value) => this.props.onChangeText(field, value)}
 					onNext={() => this.onNext()}

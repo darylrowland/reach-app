@@ -19,8 +19,10 @@ const POSTCODE_REG_EXP = new RegExp("^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1
 const FIELDS = [
 	{id: "firstName", title: "First name", required: true},
 	{id: "lastName", title: "Last name", required: true},
+	{id: "companyName", title: "Company Name", required: true},
 	{id: "email", title: "Email", lowerCase: true, required: true},
 	{id: "mobileNumber", title: "Mobile Number", keyboardType: "number-pad", required: false},
+	{id: "password", title: "Password", secureEntry: true, required: true},
 	{id: "postcode", title: "Postcode", required: true, validator: (value) => {
 		if (!value) {
 			return false;
@@ -70,7 +72,7 @@ export default class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 0,
+			currentStep: 9,
 			postcode: "SW12 0NY",
 			firstName: "Daryl"
 		};
@@ -158,6 +160,7 @@ export default class Signup extends Component {
 						title={FIELDS[this.state.currentStep].title}
 						value={this.state[FIELDS[this.state.currentStep].id]}
 						field={FIELDS[this.state.currentStep]}
+						secureEntry={FIELDS[this.state.currentStep].secureEntry}
 						onChangeText={(field, value) => this.onChangeField(field, value)}
 						onChangeMarketplaces={this.props.onChangeMarketplaces}
 						marketplaces={this.props.marketplaces}

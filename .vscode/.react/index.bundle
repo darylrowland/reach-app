@@ -52023,25 +52023,39 @@ var Main = _wrapComponent('Main')(function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
 		_this.state = {
-			user: null
+			user: null,
+			marketplaces: {}
 		};
 		return _this;
 	}
 
 	_createClass(Main, [{
+		key: 'onChangeMarketplaces',
+		value: function onChangeMarketplaces(marketplaces) {
+			this.setState({
+				marketplaces: marketplaces
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			if (this.state.user) {
 				return _react3.default.createElement(_reactNative.View, { style: localStyles.container, __source: {
 						fileName: _jsxFileName,
-						lineNumber: 23
+						lineNumber: 32
 					}
 				});
 			} else {
 				return _react3.default.createElement(_Welcome2.default, {
+					marketplaces: this.state.marketplaces,
+					onChangeMarketplaces: function onChangeMarketplaces(marketplaces) {
+						return _this2.onChangeMarketplaces(marketplaces);
+					},
 					__source: {
 						fileName: _jsxFileName,
-						lineNumber: 29
+						lineNumber: 38
 					}
 				});
 			}
@@ -52083,6 +52097,25 @@ module.exports = {
     styles: {
         content: {
             padding: 30
+        },
+        mediumTitle: {
+            fontSize: 36,
+            lineHeight: 36,
+            color: COLOURS.black,
+            fontFamily: FONTS.bold,
+            marginBottom: 10
+        },
+        smallTitle: {
+            fontSize: 28,
+            lineHeight: 28,
+            color: COLOURS.black,
+            fontFamily: FONTS.bold
+        },
+        description: {
+            marginTop: 20,
+            fontSize: 18,
+            color: COLOURS.black,
+            fontFamily: FONTS.default
         }
     }
 };
@@ -52113,7 +52146,7 @@ var _Signup = require(492       ); // 492 = ./Signup
 
 var _Signup2 = _interopRequireDefault(_Signup);
 
-var _Button = require(499       ); // 499 = ./Button
+var _Button = require(508       ); // 508 = ./Button
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -52185,7 +52218,7 @@ var Welcome = _wrapComponent('Welcome')(function (_Component) {
 								lineNumber: 32
 							}
 						},
-						_react3.default.createElement(_reactNative.Image, { source: require(500                      ), __source: { // 500 = ../images/reachlogo.png
+						_react3.default.createElement(_reactNative.Image, { source: require(515                      ), __source: { // 515 = ../images/reachlogo.png
 								fileName: _jsxFileName,
 								lineNumber: 33
 							}
@@ -52217,9 +52250,12 @@ var Welcome = _wrapComponent('Welcome')(function (_Component) {
 			} else if (this.state.page == "login") {
 				return null;
 			} else {
-				return _react3.default.createElement(_Signup2.default, { onBack: function onBack() {
+				return _react3.default.createElement(_Signup2.default, {
+					onBack: function onBack() {
 						return _this2.showPage("welcome");
-					}, __source: {
+					},
+					marketplaces: this.props.marketplaces,
+					onChangeMarketplaces: this.props.onChangeMarketplaces, __source: {
 						fileName: _jsxFileName,
 						lineNumber: 45
 					}
@@ -52282,7 +52318,7 @@ var _SignupField = require(497            ); // 497 = ./SignupField
 
 var _SignupField2 = _interopRequireDefault(_SignupField);
 
-var _reactNativeGeocoder = require(501                    ); // 501 = react-native-geocoder
+var _reactNativeGeocoder = require(512                    ); // 512 = react-native-geocoder
 
 var _reactNativeGeocoder2 = _interopRequireDefault(_reactNativeGeocoder);
 
@@ -52315,7 +52351,7 @@ function _wrapComponent(id) {
 
 var POSTCODE_REG_EXP = new RegExp("^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$");
 
-var FIELDS = [{ id: "firstName", title: "First name", required: true }, { id: "lastName", title: "Last name", required: true }, { id: "email", title: "Email", lowerCase: true, required: true }, { id: "mobileNumber", title: "Mobile Number", keyboardType: "number-pad", required: false }, { id: "postcode", title: "Postcode", required: true, validator: function validator(value) {
+var FIELDS = [{ id: "firstName", title: "First name", required: true }, { id: "lastName", title: "Last name", required: true }, { id: "companyName", title: "Company Name", required: true }, { id: "email", title: "Email", lowerCase: true, required: true }, { id: "mobileNumber", title: "Mobile Number", keyboardType: "number-pad", required: false }, { id: "password", title: "Password", secureEntry: true, required: true }, { id: "postcode", title: "Postcode", required: true, validator: function validator(value) {
 		if (!value) {
 			return false;
 		}
@@ -52352,7 +52388,7 @@ var FIELDS = [{ id: "firstName", title: "First name", required: true }, { id: "l
 		}
 
 		return value.toUpperCase();
-	} }, { id: "firstLineAddress", title: "First line of address", required: true }];
+	} }, { id: "firstLineAddress", title: "First line of address", required: true }, { id: "pic", title: "Profile Pic", required: false, type: "pic" }, { id: "marketplace", title: "Select services", required: false, type: "marketplace" }];
 
 var Signup = _wrapComponent('Signup')(function (_Component) {
 	_inherits(Signup, _Component);
@@ -52363,7 +52399,7 @@ var Signup = _wrapComponent('Signup')(function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Signup.__proto__ || Object.getPrototypeOf(Signup)).call(this, props));
 
 		_this.state = {
-			currentStep: 4,
+			currentStep: 9,
 			postcode: "SW12 0NY",
 			firstName: "Daryl"
 		};
@@ -52456,21 +52492,21 @@ var Signup = _wrapComponent('Signup')(function (_Component) {
 				_reactNative.View,
 				{ style: localStyles.container, __source: {
 						fileName: _jsxFileName,
-						lineNumber: 151
+						lineNumber: 155
 					}
 				},
 				_react3.default.createElement(_SignupHeader2.default, { showBack: true, onBack: function onBack() {
 						return _this3.onBack();
 					}, __source: {
 						fileName: _jsxFileName,
-						lineNumber: 152
+						lineNumber: 156
 					}
 				}),
 				_react3.default.createElement(
 					_reactNative.View,
 					{ style: localStyles.content, __source: {
 							fileName: _jsxFileName,
-							lineNumber: 153
+							lineNumber: 157
 						}
 					},
 					_react3.default.createElement(_SignupField2.default, {
@@ -52478,21 +52514,24 @@ var Signup = _wrapComponent('Signup')(function (_Component) {
 						title: FIELDS[this.state.currentStep].title,
 						value: this.state[FIELDS[this.state.currentStep].id],
 						field: FIELDS[this.state.currentStep],
+						secureEntry: FIELDS[this.state.currentStep].secureEntry,
 						onChangeText: function onChangeText(field, value) {
 							return _this3.onChangeField(field, value);
 						},
+						onChangeMarketplaces: this.props.onChangeMarketplaces,
+						marketplaces: this.props.marketplaces,
 						onNext: function onNext() {
 							return _this3.onNextStep();
 						},
 						additionalInfo: this.getAdditionalInfo(FIELDS[this.state.currentStep]), __source: {
 							fileName: _jsxFileName,
-							lineNumber: 154
+							lineNumber: 158
 						}
 					})
 				),
 				_react3.default.createElement(_SignupProgress2.default, { currentStep: this.state.currentStep, totalSteps: FIELDS.length, __source: {
 						fileName: _jsxFileName,
-						lineNumber: 163
+						lineNumber: 170
 					}
 				})
 			);
@@ -52775,6 +52814,18 @@ var _Styles = require(490              ); // 490 = ./styles/Styles
 
 var _Styles2 = _interopRequireDefault(_Styles);
 
+var _SignupFieldText = require(498                ); // 498 = ./SignupFieldText
+
+var _SignupFieldText2 = _interopRequireDefault(_SignupFieldText);
+
+var _SignupFieldProfilePic = require(500                      ); // 500 = ./SignupFieldProfilePic
+
+var _SignupFieldProfilePic2 = _interopRequireDefault(_SignupFieldProfilePic);
+
+var _SignupFieldMarketplaceSelector = require(505                               ); // 505 = ./SignupFieldMarketplaceSelector
+
+var _SignupFieldMarketplaceSelector2 = _interopRequireDefault(_SignupFieldMarketplaceSelector);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52814,7 +52865,7 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 			fieldPosition: new _reactNative.Animated.Value(0)
 		};
 
-		_this.renderNextButton = _this.renderNextButton.bind(_this);
+		_this.renderFieldType = _this.renderFieldType.bind(_this);
 		return _this;
 	}
 
@@ -52828,7 +52879,7 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 		value: function onNext() {
 			var _this2 = this;
 
-			if (this.props.value != "") {
+			if (this.props.value != "" || !this.props.field.required) {
 				_reactNative.Animated.timing(this.state.fieldPosition, {
 					toValue: 1,
 					duration: 200
@@ -52846,39 +52897,6 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 			}
 		}
 	}, {
-		key: 'renderNextButton',
-		value: function renderNextButton(field, value) {
-			var _this3 = this;
-
-			var passedValidation;
-
-			if (!field.validator) {
-				passedValidation = true;
-			} else {
-				passedValidation = field.validator(value);
-			}
-
-			if (value && passedValidation || !field.required) {
-				return _react3.default.createElement(
-					_reactNative.TouchableOpacity,
-					{ activeOpacity: _Styles2.default.activeOpacity, onPress: function onPress() {
-							return _this3.onNext();
-						}, hitSlop: _Styles2.default.hitSlop, __source: {
-							fileName: _jsxFileName,
-							lineNumber: 60
-						}
-					},
-					_react3.default.createElement(_reactNative.Image, { source: require(498                    ), __source: { // 498 = ../images/forward.png
-							fileName: _jsxFileName,
-							lineNumber: 61
-						}
-					})
-				);
-			} else {
-				return null;
-			}
-		}
-	}, {
 		key: 'renderAdditionalInfo',
 		value: function renderAdditionalInfo(additionalInfo) {
 			if (additionalInfo) {
@@ -52886,14 +52904,14 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 					_reactNative.View,
 					{ style: localStyles.additionalInfoHolder, __source: {
 							fileName: _jsxFileName,
-							lineNumber: 72
+							lineNumber: 56
 						}
 					},
 					_react3.default.createElement(
 						_reactNative.Text,
 						{ style: localStyles.additionalInfo, __source: {
 								fileName: _jsxFileName,
-								lineNumber: 73
+								lineNumber: 57
 							}
 						},
 						additionalInfo
@@ -52902,10 +52920,65 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 			}
 		}
 	}, {
+		key: 'renderFieldType',
+		value: function renderFieldType() {
+			var _this3 = this;
+
+			if (!this.props.field.type || this.props.field.type == "text") {
+				return _react3.default.createElement(_SignupFieldText2.default, {
+					id: this.props.id,
+					value: this.props.value,
+					title: this.props.title,
+					secureEntry: this.props.secureEntry,
+					field: this.props.field,
+					onChangeText: function onChangeText(field, value) {
+						return _this3.props.onChangeText(field, value);
+					},
+					onNext: function onNext() {
+						return _this3.onNext();
+					},
+					__source: {
+						fileName: _jsxFileName,
+						lineNumber: 68
+					}
+				});
+			} else if (this.props.field.type == "pic") {
+				return _react3.default.createElement(_SignupFieldProfilePic2.default, {
+					id: this.props.id,
+					value: this.props.value,
+					field: this.props.field,
+					onChangeFile: function onChangeFile(field, uri) {
+						return _this3.props.onChangeText(field, uri);
+					},
+					onNext: function onNext() {
+						return _this3.onNext();
+					},
+					__source: {
+						fileName: _jsxFileName,
+						lineNumber: 80
+					}
+				});
+			} else if (this.props.field.type == "marketplace") {
+				return _react3.default.createElement(_SignupFieldMarketplaceSelector2.default, {
+					id: this.props.id,
+					marketplaces: this.props.marketplaces,
+					field: this.props.field,
+					onChangeMarketplaces: this.props.onChangeMarketplaces,
+					onNext: function onNext() {
+						return _this3.onNext();
+					},
+					__source: {
+						fileName: _jsxFileName,
+						lineNumber: 90
+					}
+				});
+			} else {
+				return null;
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _this4 = this;
-
 			var label;
 			var next;
 
@@ -52914,7 +52987,7 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 					_reactNative.Text,
 					{ style: localStyles.label, __source: {
 							fileName: _jsxFileName,
-							lineNumber: 87
+							lineNumber: 109
 						}
 					},
 					this.props.title
@@ -52922,6 +52995,11 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 			}
 
 			var containerStyles = [localStyles.container];
+
+			if (this.props.field.type == "marketplace" || this.props.field.type == "pic") {
+				containerStyles.push(localStyles.containerNoBorder);
+			}
+
 			containerStyles.push({
 				transform: [{ translateX: this.state.fieldPosition.interpolate({
 						inputRange: [-1, 0, 1],
@@ -52933,59 +53011,17 @@ var SignupField = _wrapComponent('SignupField')(function (_Component) {
 				_reactNative.View,
 				{ style: localStyles.outerContainer, __source: {
 						fileName: _jsxFileName,
-						lineNumber: 103
+						lineNumber: 130
 					}
 				},
 				_react3.default.createElement(
 					_reactNative.Animated.View,
 					{ style: containerStyles, __source: {
 							fileName: _jsxFileName,
-							lineNumber: 104
+							lineNumber: 131
 						}
 					},
-					_react3.default.createElement(
-						_reactNative.View,
-						{ style: localStyles.fieldAndLabel, __source: {
-								fileName: _jsxFileName,
-								lineNumber: 105
-							}
-						},
-						_react3.default.createElement(
-							_reactNative.View,
-							{ style: localStyles.labelHolder, __source: {
-									fileName: _jsxFileName,
-									lineNumber: 106
-								}
-							},
-							label
-						),
-						_react3.default.createElement(
-							_reactNative.View,
-							{ style: localStyles.inputAndNext, __source: {
-									fileName: _jsxFileName,
-									lineNumber: 109
-								}
-							},
-							_react3.default.createElement(_reactNative.TextInput, {
-								key: this.props.id,
-								value: this.props.value,
-								placeholder: this.props.title,
-								onChangeText: function onChangeText(value) {
-									return _this4.onChangeText(_this4.props.field, value);
-								},
-								style: localStyles.field,
-								onSubmitEditing: function onSubmitEditing() {
-									return _this4.onNext();
-								},
-								keyboardType: this.props.field.keyboardType,
-								__source: {
-									fileName: _jsxFileName,
-									lineNumber: 110
-								}
-							}),
-							this.renderNextButton(this.props.field, this.props.value)
-						)
-					),
+					this.renderFieldType(),
 					this.renderAdditionalInfo(this.props.additionalInfo)
 				)
 			);
@@ -53005,15 +53041,6 @@ var localStyles = _reactNative.StyleSheet.create({
 	outerContainer: {
 		flexDirection: "row"
 	},
-	fieldAndLabel: {
-		flexDirection: "column",
-		height: 60,
-		flex: 1
-	},
-	inputAndNext: {
-		flex: 1,
-		flexDirection: "row"
-	},
 	container: {
 		flexDirection: "row",
 		flex: 1,
@@ -53023,23 +53050,10 @@ var localStyles = _reactNative.StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: _Styles2.default.colours.lightBackground
 	},
-	labelHolder: {
-		height: 40
+	containerNoBorder: {
+		borderBottomWidth: 0
 	},
-	field: {
-		fontFamily: _Styles2.default.fonts.bold,
-		flexDirection: "row",
-		color: _Styles2.default.colours.black,
-		fontSize: 20,
-		height: 30,
-		flex: 1
 
-	},
-	label: {
-		fontSize: 15,
-		fontFamily: _Styles2.default.fonts.bold,
-		color: _Styles2.default.colours.border
-	},
 	additionalInfo: {
 		color: _Styles2.default.colours.primary,
 		fontFamily: _Styles2.default.fonts.bold,
@@ -53055,174 +53069,1330 @@ var localStyles = _reactNative.StyleSheet.create({
 	}
 });
 }, 497, null, "Reach/components/SignupField.js");
-__d(/* Reach/images/forward.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":12,"height":21,"scales":[1,2,3],"hash":"7b1612fcf836e213c7354a008ee2f836","name":"forward","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
-}, 498, null, "Reach/images/forward.png");
-__d(/* react-native-geocoder/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
-  value: true
+__d(/* Reach/components/SignupFieldText.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
 });
 
-var _geocoder = require(502               ); // 502 = ./js/geocoder.js
+var _react2 = require(35     ); // 35 = react
 
-var _geocoder2 = _interopRequireDefault(_geocoder);
+var _react3 = _interopRequireDefault(_react2);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
 
-exports.default = _geocoder2.default;
-}, 501, null, "react-native-geocoder/index.js");
-__d(/* react-native-geocoder/js/geocoder.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldText.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _reactNative = require(12            ); // 12 = react-native
 
-var _googleApi = require(503             ); // 503 = ./googleApi.js
+var _Styles = require(490              ); // 490 = ./styles/Styles
 
-var _googleApi2 = _interopRequireDefault(_googleApi);
+var _Styles2 = _interopRequireDefault(_Styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var RNGeocoder = _reactNative.NativeModules.RNGeocoder;
-exports.default = {
-  apiKey: null,
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  fallbackToGoogle: function fallbackToGoogle(key) {
-    this.apiKey = key;
-  },
-  geocodePosition: function geocodePosition(position) {
-    var _this = this;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    if (!position || !position.lat || !position.lng) {
-      return Promise.reject(new Error("invalid position: {lat, lng} required"));
-    }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-    return RNGeocoder.geocodePosition(position).catch(function (err) {
-      if (!_this.apiKey) {
-        throw err;
-      }
-      return _googleApi2.default.geocodePosition(_this.apiKey, position);
-    });
-  },
-  geocodeAddress: function geocodeAddress(address) {
-    var _this2 = this;
-
-    if (!address) {
-      return Promise.reject(new Error("address is null"));
-    }
-
-    return RNGeocoder.geocodeAddress(address).catch(function (err) {
-      if (!_this2.apiKey) {
-        throw err;
-      }
-      return _googleApi2.default.geocodeAddress(_this2.apiKey, address);
-    });
-  }
+var _components = {
+	SignupFieldText: {
+		displayName: 'SignupFieldText'
+	}
 };
-}, 502, null, "react-native-geocoder/js/geocoder.js");
-__d(/* react-native-geocoder/js/googleApi.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
-  value: true
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldText.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
 });
-var googleUrl = 'https://maps.google.com/maps/api/geocode/json';
 
-function format(raw) {
-  var address = {
-    position: {},
-    formattedAddress: raw.formatted_address || '',
-    feature: null,
-    streetNumber: null,
-    streetName: null,
-    postalCode: null,
-    locality: null,
-    country: null,
-    countryCode: null,
-    adminArea: null,
-    subAdminArea: null,
-    subLocality: null
-  };
-
-  if (raw.geometry && raw.geometry.location) {
-    address.position = {
-      lat: raw.geometry.location.lat,
-      lng: raw.geometry.location.lng
-    };
-  }
-
-  raw.address_components.forEach(function (component) {
-    if (component.types.indexOf('route') !== -1) {
-      address.streetName = component.long_name;
-    } else if (component.types.indexOf('street_number') !== -1) {
-      address.streetNumber = component.long_name;
-    } else if (component.types.indexOf('country') !== -1) {
-      address.country = component.long_name;
-      address.countryCode = component.short_name;
-    } else if (component.types.indexOf('locality') !== -1) {
-      address.locality = component.long_name;
-    } else if (component.types.indexOf('postal_code') !== -1) {
-      address.postalCode = component.long_name;
-    } else if (component.types.indexOf('administrative_area_level_1') !== -1) {
-      address.adminArea = component.long_name;
-    } else if (component.types.indexOf('administrative_area_level_2') !== -1) {
-      address.subAdminArea = component.long_name;
-    } else if (component.types.indexOf('sublocality') !== -1 || component.types.indexOf('sublocality_level_1') !== -1) {
-      address.subLocality = component.long_name;
-    } else if (component.types.indexOf('point_of_interest') !== -1 || component.types.indexOf('colloquial_area') !== -1) {
-      address.feature = component.long_name;
-    }
-  });
-
-  return address;
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
 }
 
-exports.default = {
-  geocodePosition: function geocodePosition(apiKey, position) {
-    if (!apiKey || !position || !position.lat || !position.lng) {
-      return Promise.reject(new Error("invalid apiKey / position"));
-    }
+var SignupFieldText = _wrapComponent('SignupFieldText')(function (_Component) {
+	_inherits(SignupFieldText, _Component);
 
-    return this.geocodeRequest(googleUrl + '?key=' + apiKey + '&latlng=' + position.lat + ',' + position.lng);
-  },
-  geocodeAddress: function geocodeAddress(apiKey, address) {
-    if (!apiKey || !address) {
-      return Promise.reject(new Error("invalid apiKey / address"));
-    }
+	function SignupFieldText(props) {
+		_classCallCheck(this, SignupFieldText);
 
-    return this.geocodeRequest(googleUrl + '?key=' + apiKey + '&address=' + encodeURI(address));
-  },
-  geocodeRequest: function geocodeRequest(url) {
-    var res, json;
-    return regeneratorRuntime.async(function geocodeRequest$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return regeneratorRuntime.awrap(fetch(url));
+		var _this = _possibleConstructorReturn(this, (SignupFieldText.__proto__ || Object.getPrototypeOf(SignupFieldText)).call(this, props));
 
-          case 2:
-            res = _context.sent;
-            _context.next = 5;
-            return regeneratorRuntime.awrap(res.json());
+		_this.renderNextButton = _this.renderNextButton.bind(_this);
+		return _this;
+	}
 
-          case 5:
-            json = _context.sent;
+	_createClass(SignupFieldText, [{
+		key: 'renderNextButton',
+		value: function renderNextButton(field, value) {
+			var _this2 = this;
 
-            if (!(!json.results || json.status !== 'OK')) {
-              _context.next = 8;
-              break;
-            }
+			var passedValidation;
 
-            return _context.abrupt('return', Promise.reject(new Error('geocoding error ' + json.status + ', ' + json.error_message)));
+			if (!field.validator) {
+				passedValidation = true;
+			} else {
+				passedValidation = field.validator(value);
+			}
 
-          case 8:
-            return _context.abrupt('return', json.results.map(format));
+			if (value && passedValidation || !field.required) {
+				return _react3.default.createElement(
+					_reactNative.TouchableOpacity,
+					{ activeOpacity: _Styles2.default.activeOpacity, onPress: function onPress() {
+							return _this2.props.onNext();
+						}, hitSlop: _Styles2.default.hitSlop, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 31
+						}
+					},
+					_react3.default.createElement(_reactNative.Image, { source: require(499                    ), __source: { // 499 = ../images/forward.png
+							fileName: _jsxFileName,
+							lineNumber: 32
+						}
+					})
+				);
+			} else {
+				return null;
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
 
-          case 9:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, null, this);
+			var label;
+
+			if (this.props.value) {
+				label = _react3.default.createElement(
+					_reactNative.Text,
+					{ style: localStyles.label, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 45
+						}
+					},
+					this.props.title
+				);
+			}
+
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.fieldAndLabel, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 50
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.labelHolder, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 51
+						}
+					},
+					label
+				),
+				_react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.inputAndNext, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 54
+						}
+					},
+					_react3.default.createElement(_reactNative.TextInput, {
+						key: this.props.id,
+						value: this.props.value,
+						placeholder: this.props.title,
+						secureTextEntry: this.props.secureEntry,
+						onChangeText: function onChangeText(value) {
+							return _this3.props.onChangeText(_this3.props.field, value);
+						},
+						style: localStyles.field,
+						onSubmitEditing: function onSubmitEditing() {
+							return _this3.props.onNext();
+						},
+						keyboardType: this.props.field.keyboardType,
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 55
+						}
+					}),
+					this.renderNextButton(this.props.field, this.props.value)
+				)
+			);
+		}
+	}]);
+
+	return SignupFieldText;
+}(_react2.Component));
+
+exports.default = SignupFieldText;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	field: {
+		fontFamily: _Styles2.default.fonts.bold,
+		flexDirection: "row",
+		color: _Styles2.default.colours.black,
+		fontSize: 20,
+		height: 30,
+		flex: 1
+	},
+
+	fieldAndLabel: {
+		flexDirection: "column",
+		height: 60,
+		flex: 1
+	},
+	inputAndNext: {
+		flex: 1,
+		flexDirection: "row"
+	},
+	label: {
+		fontSize: 15,
+		fontFamily: _Styles2.default.fonts.bold,
+		color: _Styles2.default.colours.border
+	},
+	labelHolder: {
+		height: 40
+	}
+});
+}, 498, null, "Reach/components/SignupFieldText.js");
+__d(/* Reach/images/forward.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":12,"height":21,"scales":[1,2,3],"hash":"7b1612fcf836e213c7354a008ee2f836","name":"forward","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
+}, 499, null, "Reach/images/forward.png");
+__d(/* Reach/components/SignupFieldProfilePic.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldProfilePic.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+var _ProfilePic = require(501           ); // 501 = ./ProfilePic
+
+var _ProfilePic2 = _interopRequireDefault(_ProfilePic);
+
+var _NextTextButton = require(504               ); // 504 = ./NextTextButton
+
+var _NextTextButton2 = _interopRequireDefault(_NextTextButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	SignupFieldProfilePic: {
+		displayName: 'SignupFieldProfilePic'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldProfilePic.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var SignupFieldProfilePic = _wrapComponent('SignupFieldProfilePic')(function (_Component) {
+	_inherits(SignupFieldProfilePic, _Component);
+
+	function SignupFieldProfilePic() {
+		_classCallCheck(this, SignupFieldProfilePic);
+
+		return _possibleConstructorReturn(this, (SignupFieldProfilePic.__proto__ || Object.getPrototypeOf(SignupFieldProfilePic)).apply(this, arguments));
+	}
+
+	_createClass(SignupFieldProfilePic, [{
+		key: 'getTitle',
+		value: function getTitle(value) {
+			if (value) {
+				return "Next";
+			}
+
+			return "Skip";
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.container, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 25
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: _Styles2.default.styles.mediumTitle, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 26
+						}
+					},
+					'Make yourself known'
+				),
+				_react3.default.createElement(_ProfilePic2.default, { uri: this.props.value, onChangeFile: function onChangeFile(fileUri) {
+						return _this2.props.onChangeFile(_this2.props.field, fileUri);
+					}, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 27
+					}
+				}),
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: _Styles2.default.styles.description, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 28
+						}
+					},
+					'Upload an image that represents your business'
+				),
+				_react3.default.createElement(_NextTextButton2.default, { title: this.getTitle(this.props.value), onNext: this.props.onNext, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 29
+					}
+				})
+			);
+		}
+	}]);
+
+	return SignupFieldProfilePic;
+}(_react2.Component));
+
+exports.default = SignupFieldProfilePic;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		paddingBottom: 20,
+		paddingTop: 20,
+		flex: 1
+	}
+});
+}, 500, null, "Reach/components/SignupFieldProfilePic.js");
+__d(/* Reach/components/ProfilePic.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/ProfilePic.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+var _reactNativeImagePicker = require(502                        ); // 502 = react-native-image-picker
+
+var _reactNativeImagePicker2 = _interopRequireDefault(_reactNativeImagePicker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	ProfilePic: {
+		displayName: 'ProfilePic'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/ProfilePic.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var ProfilePic = _wrapComponent('ProfilePic')(function (_Component) {
+	_inherits(ProfilePic, _Component);
+
+	function ProfilePic(props) {
+		_classCallCheck(this, ProfilePic);
+
+		var _this = _possibleConstructorReturn(this, (ProfilePic.__proto__ || Object.getPrototypeOf(ProfilePic)).call(this, props));
+
+		_this.state = {};
+		return _this;
+	}
+
+	_createClass(ProfilePic, [{
+		key: 'onChangePic',
+		value: function onChangePic() {
+			var _this2 = this;
+
+			_reactNativeImagePicker2.default.showImagePicker({ title: "Choose a picture", noData: true }, function (response) {
+				if (response.didCancel) {
+					console.log('User cancelled image picker');
+				} else if (response.error) {
+					console.log('ImagePicker Error: ', response.error);
+				} else if (response.uri) {
+					_this2.setState({
+						chosenPic: { uri: response.uri }
+					}, function () {
+						_this2.props.onChangeFile(response.uri);
+					});
+				}
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
+
+			var pic;
+
+			if (this.state.chosenPic) {
+				pic = _react3.default.createElement(_reactNative.Image, { source: this.state.chosenPic, style: localStyles.profilePic, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 42
+					}
+				});
+			} else {
+				pic = _react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.cameraHolder, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 46
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.View,
+						{ style: localStyles.plusCircle, __source: {
+								fileName: _jsxFileName,
+								lineNumber: 47
+							}
+						},
+						_react3.default.createElement(_reactNative.Image, { source: require(503                ), __source: { // 503 = ../images/add.png
+								fileName: _jsxFileName,
+								lineNumber: 48
+							}
+						})
+					)
+				);
+			}
+
+			return _react3.default.createElement(
+				_reactNative.TouchableOpacity,
+				{ style: localStyles.pic, onPress: function onPress() {
+						return _this3.onChangePic();
+					}, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 56
+					}
+				},
+				pic
+			);
+		}
+	}]);
+
+	return ProfilePic;
+}(_react2.Component));
+
+exports.default = ProfilePic;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	pic: {
+		width: 120,
+		height: 120,
+		borderRadius: 10,
+		backgroundColor: _Styles2.default.colours.primary,
+		borderRadius: 1,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		overflow: "hidden"
+	},
+	profilePic: {
+		width: 120,
+		height: 120
+	},
+	cameraHolder: {
+		backgroundColor: _Styles2.default.colours.white,
+		width: 60,
+		height: 30,
+		borderRadius: 2,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	plusCircle: {
+		width: 22,
+		height: 22,
+		borderRadius: 11,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: _Styles2.default.colours.primary
+	}
+});
+}, 501, null, "Reach/components/ProfilePic.js");
+__d(/* react-native-image-picker/index.js */function(global, require, module, exports) {'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _require = require(12            ), // 12 = react-native
+    NativeModules = _require.NativeModules;
+
+var ImagePickerManager = NativeModules.ImagePickerManager;
+
+
+var DEFAULT_OPTIONS = {
+  title: 'Select a Photo',
+  cancelButtonTitle: 'Cancel',
+  takePhotoButtonTitle: 'Take Photo…',
+  chooseFromLibraryButtonTitle: 'Choose from Library…',
+  quality: 1.0,
+  allowsEditing: false,
+  permissionDenied: {
+    title: 'Permission denied',
+    text: 'To be able to take pictures with your camera and choose images from your library.',
+    reTryTitle: 're-try',
+    okTitle: 'I\'m sure'
   }
 };
-}, 503, null, "react-native-geocoder/js/googleApi.js");
+
+module.exports = _extends({}, ImagePickerManager, {
+  showImagePicker: function showImagePicker(options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    return ImagePickerManager.showImagePicker(_extends({}, DEFAULT_OPTIONS, options), callback);
+  }
+});
+}, 502, null, "react-native-image-picker/index.js");
+__d(/* Reach/images/add.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":14,"height":14,"scales":[1,2,3],"hash":"72146259eb09cf2faaec71574b8a1389","name":"add","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
+}, 503, null, "Reach/images/add.png");
+__d(/* Reach/components/NextTextButton.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/NextTextButton.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	NextTextButton: {
+		displayName: 'NextTextButton'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/NextTextButton.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var NextTextButton = _wrapComponent('NextTextButton')(function (_Component) {
+	_inherits(NextTextButton, _Component);
+
+	function NextTextButton() {
+		_classCallCheck(this, NextTextButton);
+
+		return _possibleConstructorReturn(this, (NextTextButton.__proto__ || Object.getPrototypeOf(NextTextButton)).apply(this, arguments));
+	}
+
+	_createClass(NextTextButton, [{
+		key: 'render',
+		value: function render() {
+			return _react3.default.createElement(
+				_reactNative.TouchableOpacity,
+				{ activeOpacity: _Styles2.default.activeOpacity, style: localStyles.container, onPress: this.props.onNext, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 15
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.button, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 16
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.Text,
+						{ style: localStyles.title, __source: {
+								fileName: _jsxFileName,
+								lineNumber: 17
+							}
+						},
+						this.props.title
+					),
+					_react3.default.createElement(_reactNative.Image, { source: require(499                    ), __source: { // 499 = ../images/forward.png
+							fileName: _jsxFileName,
+							lineNumber: 18
+						}
+					})
+				)
+			);
+		}
+	}]);
+
+	return NextTextButton;
+}(_react2.Component));
+
+exports.default = NextTextButton;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flex-end",
+		marginTop: 10,
+		marginBottom: 10
+	},
+	button: {
+		flexDirection: "row",
+		alignItems: "center"
+	},
+	title: {
+		marginTop: 8,
+		color: _Styles2.default.colours.primary,
+		fontSize: 22,
+		fontFamily: _Styles2.default.fonts.bold,
+		marginRight: 10
+	}
+});
+}, 504, null, "Reach/components/NextTextButton.js");
+__d(/* Reach/components/SignupFieldMarketplaceSelector.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldMarketplaceSelector.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _MarketplaceSelector = require(506                    ); // 506 = ./MarketplaceSelector
+
+var _MarketplaceSelector2 = _interopRequireDefault(_MarketplaceSelector);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	SignupFieldMarketplaceSelector: {
+		displayName: 'SignupFieldMarketplaceSelector'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/SignupFieldMarketplaceSelector.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var SignupFieldMarketplaceSelector = _wrapComponent('SignupFieldMarketplaceSelector')(function (_Component) {
+	_inherits(SignupFieldMarketplaceSelector, _Component);
+
+	function SignupFieldMarketplaceSelector() {
+		_classCallCheck(this, SignupFieldMarketplaceSelector);
+
+		return _possibleConstructorReturn(this, (SignupFieldMarketplaceSelector.__proto__ || Object.getPrototypeOf(SignupFieldMarketplaceSelector)).apply(this, arguments));
+	}
+
+	_createClass(SignupFieldMarketplaceSelector, [{
+		key: 'render',
+		value: function render() {
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.container, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 14
+					}
+				},
+				_react3.default.createElement(_MarketplaceSelector2.default, {
+					marketplaces: this.props.marketplaces,
+					onChangeMarketplaces: this.props.onChangeMarketplaces, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 15
+					}
+				})
+			);
+		}
+	}]);
+
+	return SignupFieldMarketplaceSelector;
+}(_react2.Component));
+
+exports.default = SignupFieldMarketplaceSelector;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		height: _reactNative.Dimensions.get("window").height - 180,
+		width: _reactNative.Dimensions.get("window").width - 60
+	}
+});
+}, 505, null, "Reach/components/SignupFieldMarketplaceSelector.js");
+__d(/* Reach/components/MarketplaceSelector.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/MarketplaceSelector.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+var _RateCard = require(507         ); // 507 = ./RateCard
+
+var _RateCard2 = _interopRequireDefault(_RateCard);
+
+var _NextTextButton = require(504               ); // 504 = ./NextTextButton
+
+var _NextTextButton2 = _interopRequireDefault(_NextTextButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	MarketplaceSelector: {
+		displayName: 'MarketplaceSelector'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/MarketplaceSelector.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var EXAMPLE_MARKETPLACES = [{ id: "locksmiths", title: "Locksmiths" }, { id: "homesecurity", title: "Home Security" }, { id: "safety", title: "Home Safety" }];
+
+var MarketplaceSelector = _wrapComponent('MarketplaceSelector')(function (_Component) {
+	_inherits(MarketplaceSelector, _Component);
+
+	function MarketplaceSelector(props) {
+		_classCallCheck(this, MarketplaceSelector);
+
+		var _this = _possibleConstructorReturn(this, (MarketplaceSelector.__proto__ || Object.getPrototypeOf(MarketplaceSelector)).call(this, props));
+
+		_this.state = {
+			loading: true,
+			selectedMarketplace: null
+		};
+
+		_this.reloadMarketplaces = _this.reloadMarketplaces.bind(_this);
+		return _this;
+	}
+
+	_createClass(MarketplaceSelector, [{
+		key: 'reloadMarketplaces',
+		value: function reloadMarketplaces() {
+			this.setState({
+				availableMarketplaces: EXAMPLE_MARKETPLACES
+			});
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.reloadMarketplaces();
+		}
+	}, {
+		key: 'onShowMarketplaceDetails',
+		value: function onShowMarketplaceDetails(marketplace) {
+			this.setState({
+				selectedMarketplace: marketplace
+			});
+		}
+	}, {
+		key: 'renderRow',
+		value: function renderRow(item) {
+			var _this2 = this;
+
+			var selectedSquare = null;
+
+			if (this.props.marketplaces && this.props.marketplaces[item.id] && this.props.marketplaces[item.id].prices && Object.keys(this.props.marketplaces[item.id].prices).length > 0) {
+				var validPriceList = false;
+
+				var itemIds = Object.keys(this.props.marketplaces[item.id].prices);
+
+				for (var i = 0; i < itemIds.length; i++) {
+					if (this.props.marketplaces[item.id].prices[itemIds[0]]) {
+						validPriceList = true;
+						break;
+					}
+				}
+
+				if (validPriceList) {
+					selectedSquare = _react3.default.createElement(_reactNative.View, { style: localStyles.selectorSquareOn, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 68
+						}
+					});
+				}
+			}
+
+			return _react3.default.createElement(
+				_reactNative.TouchableOpacity,
+				{ style: localStyles.row, activeOpacity: _Styles2.default.activeOpacity, onPress: function onPress() {
+						return _this2.onShowMarketplaceDetails(item);
+					}, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 77
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.selectorSquare, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 78
+						}
+					},
+					selectedSquare
+				),
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: localStyles.title, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 81
+						}
+					},
+					item.title
+				)
+			);
+		}
+	}, {
+		key: 'onCloseRateCard',
+		value: function onCloseRateCard() {
+			this.setState({
+				selectedMarketplace: null
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
+
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.container, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 94
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: _Styles2.default.styles.mediumTitle, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 95
+						}
+					},
+					'Services you offer'
+				),
+				_react3.default.createElement(_reactNative.FlatList, {
+					overScrollMode: 'never',
+					alwaysBounceVertical: false,
+					data: this.state.availableMarketplaces,
+					renderItem: function renderItem(item) {
+						return _this3.renderRow(item.item);
+					},
+					keyExtractor: function keyExtractor(item, index) {
+						return item.id;
+					},
+					style: localStyles.list,
+					showsVerticalScrollIndicator: false,
+					contentInset: { bottom: 100 },
+					__source: {
+						fileName: _jsxFileName,
+						lineNumber: 96
+					}
+				}),
+				_react3.default.createElement(
+					_reactNative.View,
+					{
+						__source: {
+							fileName: _jsxFileName,
+							lineNumber: 106
+						}
+					},
+					_react3.default.createElement(_NextTextButton2.default, { title: 'Next', __source: {
+							fileName: _jsxFileName,
+							lineNumber: 107
+						}
+					})
+				),
+				_react3.default.createElement(_RateCard2.default, {
+					visible: this.state.selectedMarketplace,
+					selectedMarketplace: this.state.selectedMarketplace,
+					onClose: function onClose() {
+						return _this3.onCloseRateCard();
+					},
+					marketplaces: this.props.marketplaces,
+					onChangeMarketplaces: this.props.onChangeMarketplaces, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 109
+					}
+				})
+			);
+		}
+	}]);
+
+	return MarketplaceSelector;
+}(_react2.Component));
+
+exports.default = MarketplaceSelector;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	list: {
+		flex: 1
+	},
+	selectorSquare: {
+		width: 22,
+		height: 22,
+		borderRadius: 1,
+		borderColor: _Styles2.default.colours.lightBackground,
+		borderWidth: 2,
+		marginRight: 10,
+		marginLeft: 2,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	selectorSquareOn: {
+		width: 8,
+		height: 8,
+		borderRadius: 1,
+		backgroundColor: _Styles2.default.colours.primary
+	},
+	row: {
+		flexDirection: "row",
+		alignItems: "center",
+		paddingTop: 20,
+		paddingBottom: 10,
+		borderTopColor: _Styles2.default.colours.lightBackground,
+		borderTopWidth: 1
+	},
+	title: {
+		marginTop: 8,
+		fontSize: 18,
+		fontFamily: _Styles2.default.fonts.default,
+		color: _Styles2.default.colours.black
+	}
+});
+}, 506, null, "Reach/components/MarketplaceSelector.js");
+__d(/* Reach/components/RateCard.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/RateCard.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+var _Button = require(508       ); // 508 = ./Button
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _PriceSelector = require(509              ); // 509 = ./PriceSelector
+
+var _PriceSelector2 = _interopRequireDefault(_PriceSelector);
+
+var _reactAddonsUpdate = require(516                  ); // 516 = react-addons-update
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	RateCard: {
+		displayName: 'RateCard'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/RateCard.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var EXAMPLE_RATES = [{ id: 1, title: "Lock set installation blah oh yeah" }, { id: 2, title: "Lock repair/fix" }, { id: 3, title: "Lock change" }];
+
+var RateCard = _wrapComponent('RateCard')(function (_Component) {
+	_inherits(RateCard, _Component);
+
+	function RateCard(props) {
+		_classCallCheck(this, RateCard);
+
+		var _this = _possibleConstructorReturn(this, (RateCard.__proto__ || Object.getPrototypeOf(RateCard)).call(this, props));
+
+		_this.state = {
+			availableRates: null,
+			loading: true
+		};
+
+		_this.getPrice = _this.getPrice.bind(_this);
+		return _this;
+	}
+
+	_createClass(RateCard, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.reloadRateCard();
+		}
+	}, {
+		key: 'reloadRateCard',
+		value: function reloadRateCard() {
+			this.setState({
+				availableRates: EXAMPLE_RATES
+			});
+		}
+	}, {
+		key: 'onChangePrice',
+		value: function onChangePrice(item, price) {
+			var _this2 = this;
+
+			var updatedMarketplaces = (0, _reactAddonsUpdate2.default)(this.props.marketplaces, { $apply: function $apply(marketplaces) {
+					if (!marketplaces[_this2.props.selectedMarketplace.id]) {
+						marketplaces[_this2.props.selectedMarketplace.id] = _this2.props.selectedMarketplace;
+					}
+
+					if (!marketplaces[_this2.props.selectedMarketplace.id].prices) {
+						marketplaces[_this2.props.selectedMarketplace.id].prices = {};
+					}
+
+					marketplaces[_this2.props.selectedMarketplace.id].prices[item.id] = price;
+
+					return marketplaces;
+				} });
+
+			this.props.onChangeMarketplaces(updatedMarketplaces);
+		}
+	}, {
+		key: 'getPrice',
+		value: function getPrice(item) {
+			if (this.props.marketplaces[this.props.selectedMarketplace.id] && this.props.marketplaces[this.props.selectedMarketplace.id].prices && this.props.marketplaces[this.props.selectedMarketplace.id].prices[item.id]) {
+				return this.props.marketplaces[this.props.selectedMarketplace.id].prices[item.id];
+			}
+
+			return 0;
+		}
+	}, {
+		key: 'renderRow',
+		value: function renderRow(item) {
+			var _this3 = this;
+
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.row, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 73
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: localStyles.title, numberOfLines: 3, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 74
+						}
+					},
+					item.title
+				),
+				_react3.default.createElement(_PriceSelector2.default, { price: this.getPrice(item), onChangePrice: function onChangePrice(price) {
+						return _this3.onChangePrice(item, price);
+					}, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 75
+					}
+				})
+			);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this4 = this;
+
+			return _react3.default.createElement(
+				_reactNative.Modal,
+				{ visible: this.props.visible != null, animationType: 'slide', transparent: true, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 82
+					}
+				},
+				_react3.default.createElement(_reactNative.StatusBar, { hidden: true, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 83
+					}
+				}),
+				_react3.default.createElement(
+					_reactNative.View,
+					{ style: localStyles.overlay, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 84
+						}
+					},
+					_react3.default.createElement(
+						_reactNative.View,
+						{ style: localStyles.container, __source: {
+								fileName: _jsxFileName,
+								lineNumber: 85
+							}
+						},
+						_react3.default.createElement(
+							_reactNative.View,
+							{ style: localStyles.content, __source: {
+									fileName: _jsxFileName,
+									lineNumber: 86
+								}
+							},
+							_react3.default.createElement(
+								_reactNative.Text,
+								{ style: _Styles2.default.styles.smallTitle, __source: {
+										fileName: _jsxFileName,
+										lineNumber: 87
+									}
+								},
+								'Build your rate card'
+							),
+							_react3.default.createElement(
+								_reactNative.Text,
+								{ style: [_Styles2.default.styles.description, localStyles.description], __source: {
+										fileName: _jsxFileName,
+										lineNumber: 88
+									}
+								},
+								'Set prices for your work'
+							),
+							_react3.default.createElement(_reactNative.FlatList, {
+								overScrollMode: 'never',
+								alwaysBounceVertical: false,
+								data: this.state.availableRates,
+								extraData: this.props.marketplaces,
+								renderItem: function renderItem(item) {
+									return _this4.renderRow(item.item);
+								},
+								keyExtractor: function keyExtractor(item) {
+									return item.id;
+								},
+								style: localStyles.list,
+								__source: {
+									fileName: _jsxFileName,
+									lineNumber: 89
+								}
+							})
+						),
+						_react3.default.createElement(_Button2.default, { title: 'Close', noBorder: false, onPress: this.props.onClose, __source: {
+								fileName: _jsxFileName,
+								lineNumber: 100
+							}
+						})
+					)
+				)
+			);
+		}
+	}]);
+
+	return RateCard;
+}(_react2.Component));
+
+exports.default = RateCard;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		flex: 1,
+		padding: 30,
+		borderTopLeftRadius: 5,
+		borderTopRightRadius: 5,
+		backgroundColor: _Styles2.default.colours.white
+	},
+	list: {
+		marginTop: 10
+	},
+	row: {
+		paddingTop: 20,
+		paddingBottom: 10,
+		borderTopColor: _Styles2.default.colours.lightBackground,
+		borderTopWidth: 1,
+		borderBottomColor: _Styles2.default.colours.lightBackground,
+		borderBottomWidth: 1,
+		flexDirection: "row",
+		alignItems: "flex-start",
+		justifyContent: "space-between"
+	},
+	title: {
+		fontSize: 18,
+		fontFamily: _Styles2.default.fonts.default,
+		color: _Styles2.default.colours.black,
+		flex: 1,
+		marginRight: 10
+	},
+	description: {
+		marginTop: 0,
+		color: _Styles2.default.colours.lightBackground,
+		fontFamily: _Styles2.default.fonts.bold
+	},
+	overlay: {
+		backgroundColor: "rgba(0,0,0,0.5)",
+		flex: 1,
+		padding: 20,
+		paddingTop: 30,
+		paddingBottom: 0
+	},
+	content: {
+		flexDirection: "column",
+		flex: 1
+	}
+});
+}, 507, null, "Reach/components/RateCard.js");
 __d(/* Reach/components/Button.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
 	value: true
 });
@@ -53336,9 +54506,435 @@ var localStyles = _reactNative.StyleSheet.create({
 		fontFamily: _Styles2.default.fonts.black
 	}
 });
-}, 499, null, "Reach/components/Button.js");
+}, 508, null, "Reach/components/Button.js");
+__d(/* Reach/components/PriceSelector.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react2 = require(35     ); // 35 = react
+
+var _react3 = _interopRequireDefault(_react2);
+
+var _index = require(127                                                 ); // 127 = ./../node_modules/react-transform-hmr/lib/index.js
+
+var _index2 = _interopRequireDefault(_index);
+
+var _jsxFileName = '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/PriceSelector.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _Styles = require(490              ); // 490 = ./styles/Styles
+
+var _Styles2 = _interopRequireDefault(_Styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _components = {
+	PriceSelector: {
+		displayName: 'PriceSelector'
+	}
+};
+
+var _node_modulesReactTransformHmrLibIndexJs2 = (0, _index2.default)({
+	filename: '/Users/darylrowland/Documents/Jigsaw/Reach/Reach/components/PriceSelector.js',
+	components: _components,
+	locals: [module],
+	imports: [_react3.default]
+});
+
+function _wrapComponent(id) {
+	return function (Component) {
+		return _node_modulesReactTransformHmrLibIndexJs2(Component, id);
+	};
+}
+
+var PRICE_INCREMENT = 10;
+
+var PriceSelector = _wrapComponent('PriceSelector')(function (_Component) {
+	_inherits(PriceSelector, _Component);
+
+	function PriceSelector(props) {
+		_classCallCheck(this, PriceSelector);
+
+		var _this = _possibleConstructorReturn(this, (PriceSelector.__proto__ || Object.getPrototypeOf(PriceSelector)).call(this, props));
+
+		_this.state = {
+			price: 0
+		};
+
+		_this.getPrice = _this.getPrice.bind(_this);
+		return _this;
+	}
+
+	_createClass(PriceSelector, [{
+		key: 'getPrice',
+		value: function getPrice() {
+			if (this.props.price) {
+				return this.props.price;
+			}
+
+			return 0;
+		}
+	}, {
+		key: 'onChangePrice',
+		value: function onChangePrice(increment) {
+			if (this.getPrice() + increment >= 0) {
+				this.props.onChangePrice(this.getPrice() + increment);
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			return _react3.default.createElement(
+				_reactNative.View,
+				{ style: localStyles.container, __source: {
+						fileName: _jsxFileName,
+						lineNumber: 42
+					}
+				},
+				_react3.default.createElement(
+					_reactNative.TouchableOpacity,
+					{ activeOpacity: _Styles2.default.activeOpacity, hitSlop: _Styles2.default.hitSlop, onPress: function onPress() {
+							return _this2.onChangePrice(-PRICE_INCREMENT);
+						}, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 43
+						}
+					},
+					_react3.default.createElement(_reactNative.Image, { source: require(510                     ), __source: { // 510 = ../images/minusbtn.png
+							fileName: _jsxFileName,
+							lineNumber: 44
+						}
+					})
+				),
+				_react3.default.createElement(
+					_reactNative.Text,
+					{ style: localStyles.price, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 46
+						}
+					},
+					'\xA3',
+					this.getPrice()
+				),
+				_react3.default.createElement(
+					_reactNative.TouchableOpacity,
+					{ activeOpacity: _Styles2.default.activeOpacity, hitSlop: _Styles2.default.hitSlop, onPress: function onPress() {
+							return _this2.onChangePrice(PRICE_INCREMENT);
+						}, __source: {
+							fileName: _jsxFileName,
+							lineNumber: 47
+						}
+					},
+					_react3.default.createElement(_reactNative.Image, { source: require(511                   ), __source: { // 511 = ../images/addbtn.png
+							fileName: _jsxFileName,
+							lineNumber: 48
+						}
+					})
+				)
+			);
+		}
+	}]);
+
+	return PriceSelector;
+}(_react2.Component));
+
+exports.default = PriceSelector;
+
+
+var localStyles = _reactNative.StyleSheet.create({
+	container: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		width: 80
+	},
+	price: {
+		fontFamily: _Styles2.default.fonts.bold,
+		fontSize: 18,
+		marginTop: 5,
+		color: _Styles2.default.colours.black
+	}
+});
+}, 509, null, "Reach/components/PriceSelector.js");
+__d(/* Reach/images/minusbtn.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":15,"height":4,"scales":[1,2,3],"hash":"556eceaedf1a0da1370ec59a32a43c46","name":"minusbtn","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
+}, 510, null, "Reach/images/minusbtn.png");
+__d(/* Reach/images/addbtn.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":15,"height":15,"scales":[1,2,3],"hash":"36d78becd4fe7dca85540477be01e9e4","name":"addbtn","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
+}, 511, null, "Reach/images/addbtn.png");
+__d(/* react-addons-update/index.js */function(global, require, module, exports) {
+
+'use strict';
+
+var _assign = require(37             ); // 37 = object-assign
+var invariant = require(13                  ); // 13 = fbjs/lib/invariant
+var hasOwnProperty = {}.hasOwnProperty;
+
+function shallowCopy(x) {
+  if (Array.isArray(x)) {
+    return x.concat();
+  } else if (x && typeof x === 'object') {
+    return _assign(new x.constructor(), x);
+  } else {
+    return x;
+  }
+}
+
+var COMMAND_PUSH = '$push';
+var COMMAND_UNSHIFT = '$unshift';
+var COMMAND_SPLICE = '$splice';
+var COMMAND_SET = '$set';
+var COMMAND_MERGE = '$merge';
+var COMMAND_APPLY = '$apply';
+
+var ALL_COMMANDS_LIST = [COMMAND_PUSH, COMMAND_UNSHIFT, COMMAND_SPLICE, COMMAND_SET, COMMAND_MERGE, COMMAND_APPLY];
+
+var ALL_COMMANDS_SET = {};
+
+ALL_COMMANDS_LIST.forEach(function (command) {
+  ALL_COMMANDS_SET[command] = true;
+});
+
+function invariantArrayCase(value, spec, command) {
+  invariant(Array.isArray(value), 'update(): expected target of %s to be an array; got %s.', command, value);
+  var specValue = spec[command];
+  invariant(Array.isArray(specValue), 'update(): expected spec of %s to be an array; got %s. ' + 'Did you forget to wrap your parameter in an array?', command, specValue);
+}
+
+function update(value, spec) {
+  invariant(typeof spec === 'object', 'update(): You provided a key path to update() that did not contain one ' + 'of %s. Did you forget to include {%s: ...}?', ALL_COMMANDS_LIST.join(', '), COMMAND_SET);
+
+  if (hasOwnProperty.call(spec, COMMAND_SET)) {
+    invariant(Object.keys(spec).length === 1, 'Cannot have more than one key in an object with %s', COMMAND_SET);
+
+    return spec[COMMAND_SET];
+  }
+
+  var nextValue = shallowCopy(value);
+
+  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
+    var mergeObj = spec[COMMAND_MERGE];
+    invariant(mergeObj && typeof mergeObj === 'object', "update(): %s expects a spec of type 'object'; got %s", COMMAND_MERGE, mergeObj);
+    invariant(nextValue && typeof nextValue === 'object', "update(): %s expects a target of type 'object'; got %s", COMMAND_MERGE, nextValue);
+    _assign(nextValue, spec[COMMAND_MERGE]);
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
+    invariantArrayCase(value, spec, COMMAND_PUSH);
+    spec[COMMAND_PUSH].forEach(function (item) {
+      nextValue.push(item);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
+    invariantArrayCase(value, spec, COMMAND_UNSHIFT);
+    spec[COMMAND_UNSHIFT].forEach(function (item) {
+      nextValue.unshift(item);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
+    invariant(Array.isArray(value), 'Expected %s target to be an array; got %s', COMMAND_SPLICE, value);
+    invariant(Array.isArray(spec[COMMAND_SPLICE]), 'update(): expected spec of %s to be an array of arrays; got %s. ' + 'Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]);
+    spec[COMMAND_SPLICE].forEach(function (args) {
+      invariant(Array.isArray(args), 'update(): expected spec of %s to be an array of arrays; got %s. ' + 'Did you forget to wrap your parameters in an array?', COMMAND_SPLICE, spec[COMMAND_SPLICE]);
+      nextValue.splice.apply(nextValue, args);
+    });
+  }
+
+  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
+    invariant(typeof spec[COMMAND_APPLY] === 'function', 'update(): expected spec of %s to be a function; got %s.', COMMAND_APPLY, spec[COMMAND_APPLY]);
+    nextValue = spec[COMMAND_APPLY](nextValue);
+  }
+
+  for (var k in spec) {
+    if (!(ALL_COMMANDS_SET.hasOwnProperty(k) && ALL_COMMANDS_SET[k])) {
+      nextValue[k] = update(value[k], spec[k]);
+    }
+  }
+
+  return nextValue;
+}
+
+module.exports = update;
+}, 516, null, "react-addons-update/index.js");
+__d(/* react-native-geocoder/index.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _geocoder = require(513               ); // 513 = ./js/geocoder.js
+
+var _geocoder2 = _interopRequireDefault(_geocoder);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _geocoder2.default;
+}, 512, null, "react-native-geocoder/index.js");
+__d(/* react-native-geocoder/js/geocoder.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactNative = require(12            ); // 12 = react-native
+
+var _googleApi = require(514             ); // 514 = ./googleApi.js
+
+var _googleApi2 = _interopRequireDefault(_googleApi);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RNGeocoder = _reactNative.NativeModules.RNGeocoder;
+exports.default = {
+  apiKey: null,
+
+  fallbackToGoogle: function fallbackToGoogle(key) {
+    this.apiKey = key;
+  },
+  geocodePosition: function geocodePosition(position) {
+    var _this = this;
+
+    if (!position || !position.lat || !position.lng) {
+      return Promise.reject(new Error("invalid position: {lat, lng} required"));
+    }
+
+    return RNGeocoder.geocodePosition(position).catch(function (err) {
+      if (!_this.apiKey) {
+        throw err;
+      }
+      return _googleApi2.default.geocodePosition(_this.apiKey, position);
+    });
+  },
+  geocodeAddress: function geocodeAddress(address) {
+    var _this2 = this;
+
+    if (!address) {
+      return Promise.reject(new Error("address is null"));
+    }
+
+    return RNGeocoder.geocodeAddress(address).catch(function (err) {
+      if (!_this2.apiKey) {
+        throw err;
+      }
+      return _googleApi2.default.geocodeAddress(_this2.apiKey, address);
+    });
+  }
+};
+}, 513, null, "react-native-geocoder/js/geocoder.js");
+__d(/* react-native-geocoder/js/googleApi.js */function(global, require, module, exports) {Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var googleUrl = 'https://maps.google.com/maps/api/geocode/json';
+
+function format(raw) {
+  var address = {
+    position: {},
+    formattedAddress: raw.formatted_address || '',
+    feature: null,
+    streetNumber: null,
+    streetName: null,
+    postalCode: null,
+    locality: null,
+    country: null,
+    countryCode: null,
+    adminArea: null,
+    subAdminArea: null,
+    subLocality: null
+  };
+
+  if (raw.geometry && raw.geometry.location) {
+    address.position = {
+      lat: raw.geometry.location.lat,
+      lng: raw.geometry.location.lng
+    };
+  }
+
+  raw.address_components.forEach(function (component) {
+    if (component.types.indexOf('route') !== -1) {
+      address.streetName = component.long_name;
+    } else if (component.types.indexOf('street_number') !== -1) {
+      address.streetNumber = component.long_name;
+    } else if (component.types.indexOf('country') !== -1) {
+      address.country = component.long_name;
+      address.countryCode = component.short_name;
+    } else if (component.types.indexOf('locality') !== -1) {
+      address.locality = component.long_name;
+    } else if (component.types.indexOf('postal_code') !== -1) {
+      address.postalCode = component.long_name;
+    } else if (component.types.indexOf('administrative_area_level_1') !== -1) {
+      address.adminArea = component.long_name;
+    } else if (component.types.indexOf('administrative_area_level_2') !== -1) {
+      address.subAdminArea = component.long_name;
+    } else if (component.types.indexOf('sublocality') !== -1 || component.types.indexOf('sublocality_level_1') !== -1) {
+      address.subLocality = component.long_name;
+    } else if (component.types.indexOf('point_of_interest') !== -1 || component.types.indexOf('colloquial_area') !== -1) {
+      address.feature = component.long_name;
+    }
+  });
+
+  return address;
+}
+
+exports.default = {
+  geocodePosition: function geocodePosition(apiKey, position) {
+    if (!apiKey || !position || !position.lat || !position.lng) {
+      return Promise.reject(new Error("invalid apiKey / position"));
+    }
+
+    return this.geocodeRequest(googleUrl + '?key=' + apiKey + '&latlng=' + position.lat + ',' + position.lng);
+  },
+  geocodeAddress: function geocodeAddress(apiKey, address) {
+    if (!apiKey || !address) {
+      return Promise.reject(new Error("invalid apiKey / address"));
+    }
+
+    return this.geocodeRequest(googleUrl + '?key=' + apiKey + '&address=' + encodeURI(address));
+  },
+  geocodeRequest: function geocodeRequest(url) {
+    var res, json;
+    return regeneratorRuntime.async(function geocodeRequest$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return regeneratorRuntime.awrap(fetch(url));
+
+          case 2:
+            res = _context.sent;
+            _context.next = 5;
+            return regeneratorRuntime.awrap(res.json());
+
+          case 5:
+            json = _context.sent;
+
+            if (!(!json.results || json.status !== 'OK')) {
+              _context.next = 8;
+              break;
+            }
+
+            return _context.abrupt('return', Promise.reject(new Error('geocoding error ' + json.status + ', ' + json.error_message)));
+
+          case 8:
+            return _context.abrupt('return', json.results.map(format));
+
+          case 9:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, null, this);
+  }
+};
+}, 514, null, "react-native-geocoder/js/googleApi.js");
 __d(/* Reach/images/reachlogo.png */function(global, require, module, exports) {module.exports=require(324                                         ).registerAsset({"__packager_asset":true,"httpServerLocation":"/assets/images","width":178,"height":41,"scales":[1,2,3],"hash":"6c93499a72d583e1ae948988118041d2","name":"reachlogo","type":"png"}); // 324 = react-native/Libraries/Image/AssetRegistry
-}, 500, null, "Reach/images/reachlogo.png");
+}, 515, null, "Reach/images/reachlogo.png");
 ;require(50);
 ;require(0);
 //# sourceMappingURL=index.map

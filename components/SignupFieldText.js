@@ -56,6 +56,7 @@ export default class SignupFieldText extends Component {
 						key={this.props.id}
 						value={this.props.value}
 						placeholder={this.props.title}
+						secureTextEntry={this.props.secureEntry}
 						onChangeText={(value) => this.props.onChangeText(this.props.field, value)}
 						style={localStyles.field}
 						onSubmitEditing={() => this.props.onNext()}

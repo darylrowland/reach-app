@@ -37,7 +37,7 @@ export default class Main extends Component {
 			return (
 				<Welcome
 					marketplaces={this.state.marketplaces}
-					onChangeMarketplaces={() => this.onChangeMarketplaces()}
+					onChangeMarketplaces={(marketplaces) => this.onChangeMarketplaces(marketplaces)}
 				/>
 			);
 		}
