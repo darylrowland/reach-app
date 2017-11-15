@@ -7,17 +7,24 @@ import {
 
 import Styles from "./styles/Styles";
 import Welcome from "./Welcome";
+import Dashboard from "./Dashboard";
 
 export default class Main extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: null,
+			user: {id: 1234},
 			marketplaces: {
 				
 			}	
 		};
+	}
+
+	onLogout() {
+		this.setState({
+			user: null
+		});
 	}
 
 	onChangeMarketplaces(marketplaces) {
@@ -29,9 +36,7 @@ export default class Main extends Component {
 	render() {
 		if (this.state.user) {
 			return (
-				<View style={localStyles.container}>
-					
-				</View>
+				<Dashboard onLogout={() => this.onLogout()}/>
 			);
 		} else {
 			return (

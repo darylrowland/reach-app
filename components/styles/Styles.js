@@ -3,6 +3,7 @@ const COLOURS = {
     black: "#1D1D1D",
     border: "#121212",
     primary: "#F08D1A",
+    lightText: "#95989A",
     lightBackground: "#e5e5e5"
 };
 
@@ -39,6 +40,10 @@ module.exports = {
             fontSize: 18,
             color: COLOURS.black,
             fontFamily: FONTS.default
+        },
+        content: {
+            flex: 1,
+            padding: 30
         }
     }
 }; 

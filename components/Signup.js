@@ -72,9 +72,7 @@ export default class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 9,
-			postcode: "SW12 0NY",
-			firstName: "Daryl"
+			currentStep: 0
 		};
 
 		this.getStreetName = this.getStreetName.bind(this);
